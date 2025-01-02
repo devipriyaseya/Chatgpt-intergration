@@ -16,7 +16,7 @@ class ChatGPTService
      * @return array The response from the OpenAI API.
      * @throws \Exception If the API call fails.
      */
-    public function sendMessage(array $messages): array
+    public function sendMessage(array $conversationHistory): array
     {
         $headers = [
             'Content-Type' => 'application/json',
@@ -27,7 +27,7 @@ class ChatGPTService
             $response = Http::withHeaders($headers)->post($this->apiUrl, [
                 'model' => 'gpt-4o-mini',
                 'store' => true,
-                'messages' => $messages,
+                'messages' => $conversationHistory,
                 'stream' => false,
             ]);
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,51 +17,58 @@
             padding: 20px;
             background-color: #f8f9fa;
         }
+
         .chat-message {
             margin-bottom: 15px;
         }
+
         .chat-message.user {
             text-align: right;
         }
+
         .chat-message.assistant {
             text-align: left;
         }
+
         .chat-message .message-bubble {
             display: inline-block;
             padding: 10px 15px;
             border-radius: 15px;
             max-width: 75%;
         }
+
         .chat-message.user .message-bubble {
             background-color: #0d6efd;
             color: white;
         }
+
         .chat-message.assistant .message-bubble {
             background-color: #e9ecef;
             color: #000;
         }
     </style>
 </head>
+
 <body>
 
-<div class="chat-container">
-    <div id="chat-messages" style="height: 300px; overflow-y: auto;">
+    <div class="chat-container">
+        <div id="chat-messages" style="height: 300px; overflow-y: auto;">
+        </div>
+
+        <form id="chat-form" class="mt-3">
+            @csrf
+            <div class="input-group">
+                <input type="text" id="message-input" class="form-control" placeholder="Type a message..." required>
+                <button class="btn btn-primary" type="submit">Send</button>
+            </div>
+        </form>
     </div>
 
-    <form id="chat-form" class="mt-3">
-        @csrf
-        <div class="input-group">
-            <input type="text" id="message-input" class="form-control" placeholder="Type a message..." required>
-            <button class="btn btn-primary" type="submit">Send</button>
-        </div>
-    </form>
-</div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-    const form = document.getElementById('chat-form');
+    <script>
+        const form = document.getElementById('chat-form');
     const messagesDiv = document.getElementById('chat-messages');
 
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -84,7 +92,8 @@
             });
 
             const data = await response.json();
-            appendMessage('assistant', data.reply);
+            appendMessage('assistant', data.message);
+            console.log(data.message)
         } catch (error) {
             appendMessage('assistant', 'Error: Something went wrong.');
         }
@@ -104,7 +113,8 @@
 
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
-</script>
+    </script>
 
 </body>
+
 </html>
